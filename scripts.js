@@ -69,7 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputs = document.querySelectorAll("input");
     const selectors = document.querySelectorAll("select");
     const descriptionFontSizeInput = document.getElementById("description-font-size-input");
-
+    let userImage = null;
+    
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].addEventListener('input', update_canvas);
     }
@@ -79,14 +80,29 @@ document.addEventListener("DOMContentLoaded", function () {
     cardDescriptionInput.addEventListener('input', update_canvas)
     itemSelect.addEventListener("input", update_customization_options);
 
-    exportButton.addEventListener("click", function () {
-        update_canvas().onload = function () {
-            const dataURL = canvas.toDataURL("image/png");
-            const downloadLink = document.createElement("a");
-            downloadLink.href = dataURL;
-            downloadLink.download = "card.png";
-            downloadLink.click();
+    cardImageInput.addEventListener("change", function (event) {
+        const selectedFile = event.target.files[0];
+    
+        if (selectedFile) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                userImage = new Image();
+                userImage.onload = function () {
+                    update_canvas(); // Update canvas once user image is loaded
+                };
+                userImage.src = e.target.result;
+            };
+            reader.readAsDataURL(selectedFile);
         }
+    });
+
+    exportButton.addEventListener("click", function () {
+        update_canvas()
+        const dataURL = canvas.toDataURL("image/png");
+        const downloadLink = document.createElement("a");
+        downloadLink.href = dataURL;
+        downloadLink.download = "card.png";
+        downloadLink.click();
     });
 
     function update_canvas() {
@@ -120,9 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Draw the card background and card type
         ctx.drawImage(update_background(), 0, 0, exportWidth, exportHeight);
         ctx.drawImage(update_type(), 0, 0, exportWidth, exportHeight);
-        if (update_image()) {
-            update_image().onload = function () {
-                
+        if (userImage) {                
                 let maxWidth = 0;
                 let maxHeight = 0;
                 let centerX = 0;
@@ -144,8 +158,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     centerY = 234;
                 }
 
-                const originalWidth = this.width;
-                const originalHeight = this.height;
+                const originalWidth = userImage.width;
+                const originalHeight = userImage.height;
                 const scaleFactor = Math.min(maxWidth / originalWidth, maxHeight / originalHeight);
                 const scaledWidth = originalWidth * scaleFactor;
                 const scaledHeight = originalHeight * scaleFactor;
@@ -153,11 +167,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 const x = centerX - scaledWidth / 2;
                 const y = centerY - scaledHeight / 2;
         
-                ctx.drawImage(this, x, y, scaledWidth, scaledHeight);
-        
-                console.log('--- Update Complete ---');
+                ctx.drawImage(userImage, x, y, scaledWidth, scaledHeight);
             };
-        };
         draw_title(ctx, title, titleX, titleY, titleWidth, titleHeight);                                        // Draws the card title
 
         if (itemType === "armor") {         // Draws the armor properties
