@@ -80,12 +80,13 @@ document.addEventListener("DOMContentLoaded", function () {
     itemSelect.addEventListener("input", update_customization_options);
 
     exportButton.addEventListener("click", function () {
-        update_canvas();
-        const dataURL = canvas.toDataURL("image/png");
-        const downloadLink = document.createElement("a");
-        downloadLink.href = dataURL;
-        downloadLink.download = "card.png";
-        downloadLink.click();
+        update_canvas().onload = function () {
+            const dataURL = canvas.toDataURL("image/png");
+            const downloadLink = document.createElement("a");
+            downloadLink.href = dataURL;
+            downloadLink.download = "card.png";
+            downloadLink.click();
+        }
     });
 
     function update_canvas() {
