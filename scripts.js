@@ -137,8 +137,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     centerX = 196;
                     centerY = 230;
                 } else if (itemType === "item") {
-                    maxWidth = 272;
-                    maxHeight = 364;
+                    maxWidth = 242;
+                    maxHeight = 334;
                     centerX = 190;
                     centerY = 234;
                 }
