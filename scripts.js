@@ -68,7 +68,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const exportButton = document.getElementById("export-button");    
     const inputs = document.querySelectorAll("input");
     const selectors = document.querySelectorAll("select");
-    
+    const descriptionFontSizeInput = document.getElementById("description-font-size-input");
+
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].addEventListener('input', update_canvas);
     }
@@ -106,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const descriptionX = 56;                    // 
         let descriptionY = 538;
         const descriptionWidth = 638;
-        const descriptionHeight = 18;
+        const descriptionFontSize = Number(descriptionFontSizeInput.value);
         // Other text values
         const itemType = itemSelect.value;
         // Image Values
@@ -170,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('HEEY');
         }
 
-        draw_description(ctx, description, descriptionX, descriptionY, descriptionWidth, descriptionHeight);    // Draws the card description
+        draw_description(ctx, description, descriptionX, descriptionY, descriptionWidth, descriptionFontSize);    // Draws the card description
 
         console.log('---Update Complete---')
         
@@ -235,8 +236,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Draws the description text
-    function draw_description(ctx, description, descriptionX, descriptionY, descriptionWidth, descriptionHeight) {
-        ctx.font = "18px 'BookmaniaRegular', serif";  // Adjust font and size
+    function draw_description(ctx, description, descriptionX, descriptionY, descriptionWidth, descriptionFontSize) {
+        ctx.font = descriptionFontSize + "px 'BookmaniaRegular', serif";  // Adjust font and size
         ctx.fillStyle = "#000";                 // Set text color
         ctx.textAlign = "left";                 // Left horizontal alignment
         ctx.letterSpacing = "0px";
@@ -264,7 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (let i = 0; i < lines.length; i++) {                                    // Iterates through each line generated
             const line = lines[i];                                                      // Sets line to the current line being iterated on
-            const currentY = descriptionY + i * descriptionHeight;                      // Sets the line's Y value to the Y value of the description + the height of each line multiplied by the amount of previous lines
+            const currentY = descriptionY + i * descriptionFontSize;                      // Sets the line's Y value to the Y value of the description + the height of each line multiplied by the amount of previous lines
             ctx.fillText(line, descriptionX, currentY);      // Draws the line //  + leadingSpaces.length * 8
         }
     }
