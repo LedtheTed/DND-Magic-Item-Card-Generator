@@ -75,6 +75,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const exportButton = document.getElementById("export-button");    
     const inputs = document.querySelectorAll("input");
     const selectors = document.querySelectorAll("select");
+    const descriptionFontSizeInput = document.getElementById("description-font-size-input");
+    let userImage = null;
     
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].addEventListener('input', update_canvas);
@@ -85,8 +87,24 @@ document.addEventListener("DOMContentLoaded", function () {
     cardDescriptionInput.addEventListener('input', update_canvas)
     itemSelect.addEventListener("input", update_customization_options);
 
+    cardImageInput.addEventListener("change", function (event) {
+        const selectedFile = event.target.files[0];
+    
+        if (selectedFile) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                userImage = new Image();
+                userImage.onload = function () {
+                    update_canvas(); // Update canvas once user image is loaded
+                };
+                userImage.src = e.target.result;
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+    });
+
     exportButton.addEventListener("click", function () {
-        update_canvas();
+        update_canvas()
         const dataURL = canvas.toDataURL("image/png");
         const downloadLink = document.createElement("a");
         downloadLink.href = dataURL;
@@ -113,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const descriptionX = 56;                    // 
         let descriptionY = 538;
         const descriptionWidth = 638;
-        const descriptionHeight = 18;
+        const descriptionFontSize = Number(descriptionFontSizeInput.value);
         // Other text values
         const itemType = itemSelect.value;
         // Image Values
@@ -125,9 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Draw the card background and card type
         ctx.drawImage(update_background(), 0, 0, exportWidth, exportHeight);
         ctx.drawImage(update_type(), 0, 0, exportWidth, exportHeight);
-        if (update_image()) {
-            update_image().onload = function () {
-                
+        if (userImage) {                
                 let maxWidth = 0;
                 let maxHeight = 0;
                 let shiftX = imageShiftX.valueAsNumber;
@@ -147,18 +163,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     shiftX += 196;
                     shiftY += 230;
                 } else if (itemType === "item") {
+<<<<<<< HEAD
                     maxWidth = 272;
                     maxHeight = 364;
                     shiftX += 190;
                     shiftY += 234;
+=======
+                    maxWidth = 242;
+                    maxHeight = 334;
+                    centerX = 190;
+                    centerY = 234;
+>>>>>>> 7cb56bccf6f686a9623a448823f9cc43524c369d
                 }
 
-                const originalWidth = this.width;
-                const originalHeight = this.height;
+                const originalWidth = userImage.width;
+                const originalHeight = userImage.height;
                 const scaleFactor = Math.min(maxWidth / originalWidth, maxHeight / originalHeight);
                 const scaledWidth = originalWidth * scaleFactor * (scaleX / 100);
                 const scaledHeight = originalHeight * scaleFactor * (scaleY / 100);
         
+<<<<<<< HEAD
                 const x = shiftX - scaledWidth / 2;
                 const y = shiftY - scaledHeight / 2;
                 
@@ -171,6 +195,13 @@ document.addEventListener("DOMContentLoaded", function () {
             };
         };
         
+=======
+                const x = centerX - scaledWidth / 2;
+                const y = centerY - scaledHeight / 2;
+        
+                ctx.drawImage(userImage, x, y, scaledWidth, scaledHeight);
+            };
+>>>>>>> 7cb56bccf6f686a9623a448823f9cc43524c369d
         draw_title(ctx, title, titleX, titleY, titleWidth, titleHeight);                                        // Draws the card title
 
         if (itemType === "armor") {         // Draws the armor properties
@@ -185,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('HEEY');
         }
 
-        draw_description(ctx, description, descriptionX, descriptionY, descriptionWidth, descriptionHeight);    // Draws the card description
+        draw_description(ctx, description, descriptionX, descriptionY, descriptionWidth, descriptionFontSize);    // Draws the card description
 
         console.log('---Update Complete---')
         
@@ -250,8 +281,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Draws the description text
-    function draw_description(ctx, description, descriptionX, descriptionY, descriptionWidth, descriptionHeight) {
-        ctx.font = "18px 'BookmaniaRegular', serif";  // Adjust font and size
+    function draw_description(ctx, description, descriptionX, descriptionY, descriptionWidth, descriptionFontSize) {
+        ctx.font = descriptionFontSize + "px 'BookmaniaRegular', serif";  // Adjust font and size
         ctx.fillStyle = "#000";                 // Set text color
         ctx.textAlign = "left";                 // Left horizontal alignment
         ctx.letterSpacing = "0px";
@@ -279,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (let i = 0; i < lines.length; i++) {                                    // Iterates through each line generated
             const line = lines[i];                                                      // Sets line to the current line being iterated on
-            const currentY = descriptionY + i * descriptionHeight;                      // Sets the line's Y value to the Y value of the description + the height of each line multiplied by the amount of previous lines
+            const currentY = descriptionY + i * descriptionFontSize;                      // Sets the line's Y value to the Y value of the description + the height of each line multiplied by the amount of previous lines
             ctx.fillText(line, descriptionX, currentY);      // Draws the line //  + leadingSpaces.length * 8
         }
     }

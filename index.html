@@ -1,8 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Playing Card Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
+<<<<<<< HEAD
 <h1>Hello World</h1>
 <p>I'm hosted with GitHub Pages.</p>
 <p>Lorem Ipsum</p>
+=======
+
+    <div class="main-container">
+        <!-- Card preview on left of screen -->
+        <div class="card-preview">
+            <canvas id="card-canvas" width="750" height="1050"></canvas>
+        </div>
+        
+        <!-- Customization options on right of screen -->
+        <div class="customization-options">
+
+            <!-- Rarity customization -->
+            <label for="rarity-select">Rarity</label>
+            <select id="rarity-select">
+                <option value="1">Common</option>
+                <option value="2">Uncommon</option>
+                <option value="3">Rare</option>
+                <option value="4">Very Rare</option>
+                <option value="5">Legendary</option>
+                <option value="6">Artifact</option>
+            </select>
+            <p></p>
+
+            <!-- Card type customization -->
+            <label for="item-select">Card Type</label>
+            <select id="item-select">
+                <option value="armor">Armor</option>
+                <option value="item">Item</option>
+                <option value="weapon">Weapon</option>
+            </select>
+            <p></p>
+
+            <!-- Item type customization -->
+            <label for="type-select">Item Type</label>
+            <select id="type-select">
+                <option value="type_armor.png">Armor</option>
+                <option value="type_potion.png">Potion</option>
+                <option value="type_ring.png">Ring</option>
+                <option value="type_rod.png">Rod</option>
+                <option value="type_scroll.png">Scroll</option>
+                <option value="type_staff.png">Staff</option>
+                <option value="type_wand.png">Wand</option>
+                <option value="type_weapon.png">Weapon</option>
+                <option value="type_wondrous_item.png">Wondrous Item</option>
+            </select>
+            <p></p>
+
+            <!-- Whether or not item is cursed -->
+            <label for="cursed-toggle">Is Cursed</label>
+            <input type="checkbox" id="cursed-toggle">
+            <p></p>
+
+            <!-- Card title input -->
+            <label for="card-title-input">Card Title</label>
+            <input type="text" id="card-title-input" placeholder="Enter Card Title" size="42">
+            <p></p>
+
+            <!-- Card image input -->
+            <label for="image-input">Card Image</label>
+            <input type="file" id="image-input" accept="image">
+            <p></p>
+
+            <!-- Card description input -->
+            <label for="card-description-input">Card Description</label>
+            <textarea type="text" id="card-description-input" placeholder="Enter Card Description" cols="30" rows="10"></textarea>
+            <p></p>
+            <label for="description-font-size-input" class="armor-customization-input">Description Font Size</label>
+            <input type="text" id="description-font-size-input" placeholder="Font Size" value="20">
+            
+            <!-- Armor Customization Options -->
+            <p class="armor-customization-input"></p>
+            <label for="armor-ac-input" class="armor-customization-input">Armor Class</label>
+            <input type="text" id="armor-ac-input" class="armor-customization-input" placeholder="AC">
+            <p class="armor-customization-input"></p>
+            <label for="armor-stealth-toggle" class="armor-customization-input">Disadvantage on Stealth</label>
+            <input type="checkbox" id="armor-stealth-toggle" class="armor-customization-input">
+            <p class="armor-customization-input"></p>
+            <label for="armor-strength-input" class="armor-customization-input">Strength Requirement</label>
+            <input type="text" id="armor-strength-input" class="armor-customization-input" placeholder="Strength">
+            <p class="armor-customization-input"></p>
+            <label for="armor-attunement-input" class="armor-customization-input">Attunement Requirements</label>
+            <input type="text" id="armor-attunement-input" class="armor-customization-input" placeholder="Attunement">
+            <p class="armor-customization-input"></p>
+            <label for="armor-gold-input" class="armor-customization-input">Gold</label>
+            <input type="text" id="armor-gold-input" class="armor-customization-input" placeholder="Gold Value">
+
+            <!-- Weapon Customization Options -->
+            <p class="weapon-customization-input"></p>
+            <label for="weapon-damage-input" class="weapon-customization-input">Damage</label>
+            <input type="text" id="weapon-damage-input" class="weapon-customization-input" placeholder="Damage">
+            <p class="weapon-customization-input"></p>
+            <label for="weapon-properties-input" class="weapon-customization-input">Properties</label>
+            <input type="text" id="weapon-properties-input" class="weapon-customization-input">
+            <p class="weapon-customization-input"></p>
+            <label for="weapon-attunement-input" class="weapon-customization-input">Attunement Requirements</label>
+            <input type="text" id="weapon-attunement-input" class="weapon-customization-input" placeholder="Attunement">
+            <p class="weapon-customization-input"></p>
+            <label for="weapon-gold-input" class="weapon-customization-input">Gold</label>
+            <input type="text" id="weapon-gold-input" class="weapon-customization-input" placeholder="Gold Value">
+
+            <!-- Item Customization Options -->
+            <p class="item-customization-input"></p>
+            <label for="item-attunement-input" class="item-customization-input">Attunement Requirements</label>
+            <input type="text" id="item-attunement-input" class="item-customization-input" placeholder="Attunement">
+            <p class="item-customization-input"></p>
+            <label for="item-gold-input" class="item-customization-input">Gold</label>
+            <input type="text" id="item-gold-input" class="item-customization-input" placeholder="Gold Value">
+            
+            <!-- Export button -->
+            <p></p>
+            <button id="export-button">Export</button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+
+>>>>>>> 7cb56bccf6f686a9623a448823f9cc43524c369d
 </body>
 </html>
