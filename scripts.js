@@ -85,13 +85,10 @@ document.addEventListener("DOMContentLoaded", function () {
     cardDescriptionInput.addEventListener('input', update_canvas)
     itemSelect.addEventListener("input", update_customization_options);
 
+    let download = false;
     exportButton.addEventListener("click", function () {
         update_canvas();
-        const dataURL = canvas.toDataURL("image/png");
-        const downloadLink = document.createElement("a");
-        downloadLink.href = dataURL;
-        downloadLink.download = "card.png";
-        downloadLink.click();
+        download = true;
     });
 
     function update_canvas() {
@@ -125,8 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // Draw the card background and card type
         ctx.drawImage(update_background(), 0, 0, exportWidth, exportHeight);
         ctx.drawImage(update_type(), 0, 0, exportWidth, exportHeight);
-        if (update_image()) {
-            update_image().onload = function () {
+        const image = update_image();
+        if (image) {
+            image.onload = function () {
                 
                 let maxWidth = 0;
                 let maxHeight = 0;
@@ -153,8 +151,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     shiftY += 234;
                 }
 
-                const originalWidth = this.width;
-                const originalHeight = this.height;
+                const originalWidth = image.width;
+                const originalHeight = image.height;
                 const scaleFactor = Math.min(maxWidth / originalWidth, maxHeight / originalHeight);
                 const scaledWidth = originalWidth * scaleFactor * (scaleX / 100);
                 const scaledHeight = originalHeight * scaleFactor * (scaleY / 100);
@@ -166,8 +164,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 ctx.save();
                 ctx.translate(x + scaledWidth / 2, y + scaledHeight / 2);                               // Translate the canvas origin to the center of the image
                 ctx.rotate((rotate * Math.PI) / 180);                                                   // Rotate the canvas
-                ctx.drawImage(this, -scaledWidth / 2, -scaledHeight / 2, scaledWidth, scaledHeight);    // Draw the rotated image
+                ctx.drawImage(image, -scaledWidth / 2, -scaledHeight / 2, scaledWidth, scaledHeight);    // Draw the rotated image
                 ctx.restore();                                                                          // Restore the canvas state
+            
+                // BANDAID
+                if (download == true) {
+                    const dataURL = canvas.toDataURL("image/png");
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = dataURL;
+                    downloadLink.download = "card.png";
+                    downloadLink.click();
+                    download = false;
+                }
             };
         };
         
