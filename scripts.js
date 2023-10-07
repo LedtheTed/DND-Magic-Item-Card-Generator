@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const dataURL = canvas.toDataURL("image/png");
                     const downloadLink = document.createElement("a");
                     downloadLink.href = dataURL;
-                    downloadLink.download = "card.png";
+                    downloadLink.download = (+raritySelect.value - 1).toString() + title + ".png";
                     downloadLink.click();
                     download = false;
                 }
