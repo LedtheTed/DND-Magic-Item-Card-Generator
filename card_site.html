@@ -68,6 +68,22 @@
             <input type="file" id="image-input" accept="image">
             <p></p>
 
+            <!-- Card image tweaking -->
+            <p>Shift Image</p>
+            <label for="image-shift-x">X: </label>
+            <input type="number" id="image-shift-x" value="0">
+            <label for="image-shift-y">Y: </label>
+            <input type="number" id="image-shift-y" value="0">
+            <p>Scale Image</p>
+            <label for="image-scale-x">X: </label>
+            <input type="number" id="image-scale-x" value="100" min="1">
+            <label for="image-scale-y">Y: </label>
+            <input type="number" id="image-scale-y" value="100" min="1">
+            <p>Rotate Image</p>
+            <label for="image-rotate">Degrees: </label>
+            <input type="range" id="image-rotate" value="0" min="0" max="360">
+            <p></p>
+
             <!-- Card description input -->
             <label for="card-description-input">Card Description</label>
             <textarea type="text" id="card-description-input" placeholder="Enter Card Description" cols="30" rows="10"></textarea>

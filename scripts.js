@@ -63,6 +63,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const ctx = canvas.getContext("2d");
     const typeSelect = document.getElementById("type-select");
     const cardTitleInput = document.getElementById("card-title-input");
+    const imageShiftX = document.getElementById("image-shift-x");
+    const imageShiftY = document.getElementById("image-shift-y");
+    const imageScaleX = document.getElementById("image-scale-x");
+    const imageScaleY = document.getElementById("image-scale-y");
+    const imageRotate = document.getElementById("image-rotate");
+
+
     const cardDescriptionInput = document.getElementById("card-description-input");
     const cardImageInput = document.getElementById("image-input");
     const exportButton = document.getElementById("export-button");    
@@ -123,39 +130,47 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 let maxWidth = 0;
                 let maxHeight = 0;
-                let centerX = 0;
-                let centerY = 0;
+                let shiftX = imageShiftX.valueAsNumber;
+                let shiftY = imageShiftY.valueAsNumber;
+                let scaleX = imageScaleX.valueAsNumber;
+                let scaleY = imageScaleY.valueAsNumber;
+                let rotate = imageRotate.valueAsNumber;
+
                 if (itemType === "armor") {
                     maxWidth = 248;
                     maxHeight = 347;
-                    centerX = 197;
-                    centerY = 222;
+                    shiftX += 197;
+                    shiftY += 222;
                 } else if (itemType === "weapon") {
                     maxWidth = 277;
                     maxHeight = 368;
-                    centerX = 196;
-                    centerY = 230;
+                    shiftX += 196;
+                    shiftY += 230;
                 } else if (itemType === "item") {
                     maxWidth = 272;
                     maxHeight = 364;
-                    centerX = 190;
-                    centerY = 234;
+                    shiftX += 190;
+                    shiftY += 234;
                 }
 
                 const originalWidth = this.width;
                 const originalHeight = this.height;
                 const scaleFactor = Math.min(maxWidth / originalWidth, maxHeight / originalHeight);
-                const scaledWidth = originalWidth * scaleFactor;
-                const scaledHeight = originalHeight * scaleFactor;
+                const scaledWidth = originalWidth * scaleFactor * (scaleX / 100);
+                const scaledHeight = originalHeight * scaleFactor * (scaleY / 100);
         
-                const x = centerX - scaledWidth / 2;
-                const y = centerY - scaledHeight / 2;
-        
-                ctx.drawImage(this, x, y, scaledWidth, scaledHeight);
-        
-                console.log('--- Update Complete ---');
+                const x = shiftX - scaledWidth / 2;
+                const y = shiftY - scaledHeight / 2;
+                
+                // Saves the current canvas state, so the image can be rotated. The image is drawn, and then the canvas's previous state is restored.
+                ctx.save();
+                ctx.translate(x + scaledWidth / 2, y + scaledHeight / 2);                               // Translate the canvas origin to the center of the image
+                ctx.rotate((rotate * Math.PI) / 180);                                                   // Rotate the canvas
+                ctx.drawImage(this, -scaledWidth / 2, -scaledHeight / 2, scaledWidth, scaledHeight);    // Draw the rotated image
+                ctx.restore();                                                                          // Restore the canvas state
             };
         };
+        
         draw_title(ctx, title, titleX, titleY, titleWidth, titleHeight);                                        // Draws the card title
 
         if (itemType === "armor") {         // Draws the armor properties
